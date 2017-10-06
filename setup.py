@@ -12,14 +12,13 @@ except ImportError:
 requires = ["requests >= 1.0.0"]
 
 setup(
-    name='my_package',
+    name='SLRdata',
     version = my_package.__version__,
-    description='Python MODULE DESCRIPTION',
+    description='SLR file format parsers',
     long_description=open('README.rst').read(),
-    author='Your Name Sir',
-    author_email='name@exampele.com',
-    url='http://proj.example.com/',
-    packages=['my_package'],
+    author='Olli Wilkman',
+    author_email='olli.wilkman@iki.fi',
+    packages=['SLRdata'],
     install_requires=requires,
     license=open('LICENSE').read(),
     zip_safe=False,
