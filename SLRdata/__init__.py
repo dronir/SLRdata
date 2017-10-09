@@ -1,11 +1,8 @@
 
-__title__ = 'my_package'
+__title__ = 'SLRdata'
 __version__ = '0.1'
-__author__ = 'Your Name'
-__license__ = 'Some License'
+__author__ = 'Olli Wilkman'
+__license__ = 'MIT'
 
-import requests
-
-def foofoo():
-    r = requests.get('http://python.org/')
-    print(r.status_code)
+from parse_cdr import parse_CRD
+from parse_cpf import parse_CPF, Prediction
