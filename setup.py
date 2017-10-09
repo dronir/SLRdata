@@ -14,7 +14,7 @@ setup(
     name='SLRdata',
     version = SLRdata.__version__,
     description='SLR file format parsers',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     author='Olli Wilkman',
     author_email='olli.wilkman@iki.fi',
     packages=['SLRdata'],
