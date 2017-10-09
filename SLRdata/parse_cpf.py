@@ -11,8 +11,7 @@ def timestamp_from_datetime(t):
     return int(JD) + seconds / 86400
 
 class Prediction:
-    def __init__(self, filename):
-        data = parse_CPF(filename)
+    def __init__(self, data):
         self.name = data["name"]
         self.start = data["start"]
         self.end = data["end"]
@@ -43,38 +42,37 @@ class Prediction:
         self.Interpolator = BarycentricInterpolator(X, Y)
 
 
-def parse_CPF(filename):
+def parse_CPF(raw_data):
     data = {}
     data["name"] = None
     data["start"] = None
     data["end"] = None
     data["predictions"] = []
-    with open(filename) as f:
-        for line in f:
-            if line.startswith("H1") or line.startswith("h1"):
-                data["name"] = line[35:45]
-            elif line.startswith("H2") or line.startswith("h2"):
-                data["start"] = datetime(
-                    year = int(line[26:30]),
-                    month = int(line[31:33]),
-                    day = int(line[34:36]),
-                    hour = int(line[37:39]),
-                    minute = int(line[40:42]),
-                    second = int(line[43:45])
-                )
-                data["end"] = datetime(
-                    year = int(line[46:50]),
-                    month = int(line[51:53]),
-                    day = int(line[54:56]),
-                    hour = int(line[57:59]),
-                    minute = int(line[60:62]),
-                    second = int(line[63:65])
-                )
-            elif line.startswith("10"):
-                sline = [float(x) for x in line.split()]
-                t = sline[2] + sline[3] / 86400
-                data["predictions"].append((t, sline[5:8]))
-    return data
+    for line in raw_data.split("\n"):
+        if line.startswith("H1") or line.startswith("h1"):
+            data["name"] = line[35:45]
+        elif line.startswith("H2") or line.startswith("h2"):
+            data["start"] = datetime(
+                year = int(line[26:30]),
+                month = int(line[31:33]),
+                day = int(line[34:36]),
+                hour = int(line[37:39]),
+                minute = int(line[40:42]),
+                second = int(line[43:45])
+            )
+            data["end"] = datetime(
+                year = int(line[46:50]),
+                month = int(line[51:53]),
+                day = int(line[54:56]),
+                hour = int(line[57:59]),
+                minute = int(line[60:62]),
+                second = int(line[63:65])
+            )
+        elif line.startswith("10"):
+            sline = [float(x) for x in line.split()]
+            t = sline[2] + sline[3] / 86400
+            data["predictions"].append((t, sline[5:8]))
+    return Prediction(data)
 
 if __name__=="__main__":
     P = Prediction(argv[1])
