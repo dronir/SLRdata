@@ -59,7 +59,7 @@ The CRD format is more complex and parsed in a much more complicated way.
     "units" (defined by the H1 header lines, ended by the H9 header). 
 2. A unit dictionary has a list of "sessions", defined by H4 headers, ended by 
     the H8 header.
-3. Each session is a dictioanry containing session parameters and a numpy
+3. Each session is a dictionary containing session parameters and a numpy
     array with the observed data.
 
 Currently only the bare minimum of ranging data is parsed: the timestamp
