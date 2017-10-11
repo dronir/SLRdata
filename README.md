@@ -59,7 +59,8 @@ The CRD format is more complex and parsed in a much more complicated way.
     "units" (defined by the H1 header lines, ended by the H9 header). 
 2. A unit dictionary has a list of "sessions", defined by H4 headers, ended by 
     the H9 header.
-3. Each session contains the observed data.
+3. Each session is a dictioanry containing session parameters and a numpy
+    array with the observed data.
 
 Currently only the bare minimum of ranging data is parsed: the timestamp
 (second of day) and the observed delay. More values are added as needed.
@@ -105,6 +106,12 @@ second parameter if the requested key is not found in the dictionary:
 
 ```python
 >>> session = unit["sessions"][0]
+
+>>> session["station"]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+KeyError: 'station'
+
 >>> session.get("station", unit["station"])
 {'name': 'BORL', 'ID': 7811, 'system': 38, 'occupancy': 2, 'timescale': 7}
 ```
