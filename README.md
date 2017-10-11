@@ -58,7 +58,7 @@ The CRD format is more complex and parsed in a much more complicated way.
 1. The parser returns collection of dictionaries representing observation 
     "units" (defined by the H1 header lines, ended by the H9 header). 
 2. A unit dictionary has a list of "sessions", defined by H4 headers, ended by 
-    the H9 header.
+    the H8 header.
 3. Each session is a dictioanry containing session parameters and a numpy
     array with the observed data.
 
