@@ -37,7 +37,6 @@ def parse_unit(line):
         "sessions" : []
     }
 
-
 def parse_session(line):
     """Parse H4 line into session."""
     if not line.startswith("H4"):
@@ -59,7 +58,14 @@ def parse_session(line):
             hour = int(line[37:39]),
             minute = int(line[40:42]),
             second = int(line[43:45])
-        )
+        ),
+        "troposphere_corrected" :  int(line[49]),
+        "CoM_corrected" : int(line[51]),
+        "receive_amplitude_corrected" : int(line[53]),
+        "station_delay_corrected" : int(line[55]),
+        "spacecraft_delay_corrected" : int(line[57]),
+        "range_type" : int(line[59]),
+        "data_quality" : int(line[61])
     }
 
 
