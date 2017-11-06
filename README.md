@@ -116,3 +116,34 @@ KeyError: 'station'
 {'name': 'BORL', 'ID': 7811, 'system': 38, 'occupancy': 2, 'timescale': 7}
 ```
 
+### Troposphere correction
+
+A troposphere correction function is included, based on [IERS Technical Note
+13](https://www.iers.org/IERS/EN/Publications/TechnicalNotes/tn13.html).
+
+The function `troposphere_correction` takes the following parameters:
+- Temperature, in Kelvin,
+- Pressure, in hPa,
+- Relative humidity, as a percentage,
+- Station latitude, in radians,
+- Station geodetic height, in kilometers,
+- Satellite elevation, in radians,
+- Laser wavelength, in nanometers.
+
+#### Examples
+
+```python
+from math import pi
+from SLRdata import troposphere_correction
+
+T = 273.15
+P = 1013.25
+RH = 50.0
+lat = 30 * pi/180
+height = 0.500
+elevation = 60 * pi/180
+lbd = 532.0
+
+deltaR = troposphere_correction(T, P, RH, lat, height, elevation, lbd)
+```
+
