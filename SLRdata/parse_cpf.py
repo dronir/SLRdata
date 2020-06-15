@@ -40,6 +40,13 @@ class Prediction:
         self.interp_start = X[4]
         self.interp_end = X[5]
         self.Interpolator = BarycentricInterpolator(X, Y)
+    def write_data(self, filename, delim=","):
+        with open(filename, "w") as f2:
+            for line in self.predictions:
+                t = line[0]
+                x, y, z = line[1]
+                out = f"{t}{delim}{x}{delim}{y}{delim}{z}\n"
+                f2.write(out)
 
 
 def parse_CPF(raw_data):

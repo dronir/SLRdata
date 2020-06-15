@@ -37,6 +37,10 @@ Calling the `interpolate(t)` method, where `t` is a `datetime` object returns
 the interpolated position as a `numpy` array. A `ValueError` will be raised if
 the `t` is outside the valid interpolation range of the prediction file.
 
+The method `write_data(filename, delim=",")` will write the raw prediction data to the
+given file, using the given delimiter (defaults to a comma).
+
+
 #### Example
 
 ```python
@@ -49,15 +53,18 @@ the `t` is outside the valid interpolation range of the prediction file.
 >>> timestamp = datetime.utcnow()
 >>> my_predict.interpolate(timestamp)
 array([  712048.91907249,  5057248.90826335, -5784879.0715739 ])
+
+>>> my_predict.write_data("predict.csv")
+>>> my_predict.write_data("predict_tab-separated.txt", "\t")
 ```
 
 ### Consolidated Ranging Data
 
-The CRD format is more complex and parsed in a much more complicated way. 
+The CRD format is more complex and parsed in a much more complicated way.
 
-1. The parser returns collection of dictionaries representing observation 
-    "units" (defined by the H1 header lines, ended by the H9 header). 
-2. A unit dictionary has a list of "sessions", defined by H4 headers, ended by 
+1. The parser returns collection of dictionaries representing observation
+    "units" (defined by the H1 header lines, ended by the H9 header).
+2. A unit dictionary has a list of "sessions", defined by H4 headers, ended by
     the H8 header.
 3. Each session is a dictionary containing session parameters and a numpy
     array with the observed data.
@@ -94,7 +101,7 @@ dict_keys(['format', 'version', 'time', 'sessions', 'station', 'target'])
 array([[  6.56007011e+04,   1.42107683e-02],
        [  6.56021011e+04,   1.41864711e-02],
        [  6.56028011e+04,   1.41743928e-02],
-       ..., 
+       ...,
        [  6.58627011e+04,   1.37161761e-02],
        [  6.58628011e+04,   1.37175978e-02],
        [  6.58630011e+04,   1.37204455e-02]])
@@ -146,4 +153,3 @@ lbd = 532.0
 
 deltaR = troposphere_correction(T, P, RH, lat, height, elevation, lbd)
 ```
-
