@@ -13,7 +13,7 @@ from datetime import datetime
 # Have to ask session for metadata, and if not available, delegate request to unit.
 # TODO: Load metadata in order, warn if session defines metadata already in unit.
 
-# Inside session, time series data comes from record types 10, 11, and 12 (ranges), 
+# Inside session, time series data comes from record types 10, 11, and 12 (ranges),
 # 20 and 21 (meteo), 30 (angles) and 40 (calibration).
 # Also type 50 (pass statistics) can appear.
 # The time series stuff should go in a Pandas dataframe?
@@ -119,27 +119,27 @@ def parse_CRD(data):
             active_data = []
             active_session = None
         if line.startswith("H2"):
-            # Station definition, add station to active session, 
+            # Station definition, add station to active session,
             # or to active unit if no active session.
             if active_session is None:
                 active_unit["station"] = parse_station(line)
             else:
                 active_session["station"] = parse_station(line)
         if line.startswith("H3"):
-            # Target definition, add new target to active session, 
+            # Target definition, add new target to active session,
             # or to active unit if no active session.
             if active_session is None:
                 active_unit["target"] = parse_target(line)
             else:
                 active_session["target"] = parse_target(line)
-        if line.startswith("10"):
-            # Data point, add to active_data.
+        if line.startswith("10") or line.startswith("11"):
+            # Data point (raw), add to active_data.
             sline = line.split()
             t = float(sline[1])
             r = float(sline[2])
             active_data.append([t, r])
     return units
-        
+
 
 
 
@@ -150,4 +150,3 @@ if __name__=="__main__":
     with open(argv[1]) as f:
         Units = parse_CRD(f.read())
         print(json.dumps(Units[0], default=str, indent=4))
-
