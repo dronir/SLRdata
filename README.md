@@ -81,6 +81,9 @@ keywords either in the unit dictionary or the session dictionary, depending on
 where they are defined in the file. It is up to the user to make sure these
 are found correctly (see example below).
 
+If a timestamp (usually end time of observations) is not specified, it will be `None`.
+
+
 #### Examples
 
 ```python
@@ -122,6 +125,15 @@ KeyError: 'station'
 >>> session.get("station", unit["station"])
 {'name': 'BORL', 'ID': 7811, 'system': 38, 'occupancy': 2, 'timescale': 7}
 ```
+
+The raw ranging data in a unit can be dumped into a CSV file with the following function:
+
+```python
+>>> SLRdata.dump_unit(unit, delim=",")
+```
+
+Some metadata will be written as comment lines starting with a `#` symbol.
+
 
 ### Troposphere correction
 

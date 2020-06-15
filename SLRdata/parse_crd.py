@@ -37,28 +37,28 @@ def parse_unit(line):
         "sessions" : []
     }
 
+def parse_date(line, end_date=False):
+    n = 20 if end_date else 0
+    year = int(line[6+n : 10+n])
+    month = int(line[11+n : 13+n])
+    day = int(line[14+n : 16+n])
+    hour = int(line[17+n : 19+n])
+    minute = int(line[20+n : 22+n])
+    second = int(line[23+n : 25+n])
+    if -1 in [year, month, day, hour, minute, second]:
+        return None
+    else:
+        return datetime(year, month, day, hour, minute, second)
+
+
 def parse_session(line):
     """Parse H4 line into session."""
     if not line.startswith("H4"):
         raise ValueError("Not H4 line for session parser!")
     return {
         "data" : None,
-        "start" : datetime(
-            year = int(line[6:10]),
-            month = int(line[11:13]),
-            day = int(line[14:16]),
-            hour = int(line[17:19]),
-            minute = int(line[20:22]),
-            second = int(line[23:25])
-        ),
-        "end" : datetime(
-            year = int(line[26:30]),
-            month = int(line[31:33]),
-            day = int(line[34:36]),
-            hour = int(line[37:39]),
-            minute = int(line[40:42]),
-            second = int(line[43:45])
-        ),
+        "start" : parse_date(line),
+        "end" : parse_date(line, end_date=True),
         "troposphere_corrected" :  int(line[49]),
         "CoM_corrected" : int(line[51]),
         "receive_amplitude_corrected" : int(line[53]),
@@ -141,6 +141,32 @@ def parse_CRD(data):
     return units
 
 
+
+
+def dump_unit(unit, filename, delim=","):
+    N = len(unit["sessions"])
+    with open(filename, "w") as f:
+        if "station" in unit.keys():
+            station = unit["station"]
+            f.write(f"# Station {station['name']} ({station['ID']})\n")
+        if "target" in unit.keys():
+            target = unit["target"]
+            f.write(f"# Target {target['name']} ({target['ID']})\n")
+        for n, session in enumerate(unit["sessions"]):
+            f.write(f"# Session {n+1} / {N}\n")
+            if "station" in session.keys():
+                station = session["station"]
+                f.write(f"# Station {station['name']} ({station['id']})\n")
+            if "target" in session.keys():
+                target = session["target"]
+                f.write(f"# Target {target['name']} ({target['ID']})\n")
+            f.write(f"# start at {session['start']}\n")
+            if session["end"] is None:
+                f.write("# No end timestamp specified.\n")
+            else:
+                f.write(f"#   end at {session['end']}\n")
+            for line in session["data"]:
+                f.write(f"{line[0]}{delim}{line[1]}\n")
 
 
 
