@@ -129,7 +129,7 @@ KeyError: 'station'
 The raw ranging data in a unit can be dumped into a CSV file with the following function:
 
 ```python
->>> SLRdata.dump_unit(unit, delim=",")
+>>> SLRdata.dump_unit(unit, filename, delim=",")
 ```
 
 Some metadata will be written as comment lines starting with a `#` symbol.
